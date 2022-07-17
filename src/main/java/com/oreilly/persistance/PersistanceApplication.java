@@ -9,5 +9,4 @@ public class PersistanceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PersistanceApplication.class, args);
 	}
-
 }

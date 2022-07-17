@@ -1,16 +1,20 @@
 package com.oreilly.persistance.entities;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+
 public class Officer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; // wrapper class (and not just int) because JPA wants a nullables primary key
+    @Enumerated(EnumType.STRING)
     private Rank rank;
     private String firstName;
     private String lastName;
 
     // Required for JPA
-    public Officer() {
-    }
+    public Officer() {}
 
     // NO id, useful for creating a new Officer, ID is set by the db
     public Officer(Rank rank, String firstName, String lastName) {
@@ -62,23 +66,27 @@ public class Officer {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Officer)) return false;
+
         Officer officer = (Officer) o;
-        return Objects.equals(id, officer.id) && rank == officer.rank && Objects.equals(firstName, officer.firstName) && Objects.equals(lastName, officer.lastName);
+
+        if (!id.equals(officer.id)) return false;
+        if (rank != officer.rank) return false;
+        if (firstName != null ? !firstName.equals(officer.firstName) : officer.firstName != null) return false;
+        return lastName.equals(officer.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, rank, firstName, lastName);
+        int result = id.hashCode();
+        result = 31 * result + rank.hashCode();
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + lastName.hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
-        return "Officer{" +
-                "id=" + id +
-                ", rank=" + rank +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
+        return String.format("%s %s %s", rank, firstName, lastName);
     }
 }
