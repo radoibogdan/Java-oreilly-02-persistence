@@ -4,10 +4,14 @@ import javax.persistence.*;
 import java.util.Objects;
 
 
+@Entity // JPA : This class represents a database table
+@Table(name = "officers") // JPA : Our tables is officers not officer so we need to use @Tables
 public class Officer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id; // wrapper class (and not just int) because JPA wants a nullables primary key
+    @Id // JPA Primary Key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // JPA
+    // JPA VIP! wrapper class Integer (and not just int) because JPA wants a nullables primary key
+    private Integer id;
+    // JPA, default is ORDINAL which will sale the index of the rank
     @Enumerated(EnumType.STRING)
     private Rank rank;
     private String firstName;
